@@ -2,6 +2,8 @@
 
 这是一个用于演示RPC框架功能的示例项目，包含三个核心组件：注册中心、服务提供者和Web服务消费者。
 
+RPC框架项目GitHub地址：[RPCFramework-Exercise](https://github.com/xiaohan2004/RPCFramework-Exercise)
+
 ## 项目结构
 
 项目采用Maven多模块结构：
