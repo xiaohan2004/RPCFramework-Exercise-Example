@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI文本服务 - RPC框架演示</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+            margin-right: 10px;
+            text-align: right;
+        }
+        .remote-message {
+            background-color: #f8d7da;
+            margin-left: 10px;
+        }
+        .local-message {
+            background-color: #d4edda;
+            margin-left: 10px;
+        }
+        .message-time {
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">RPC框架演示</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/matrix-demo">矩阵运算</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/text-demo">AI文本服务</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>AI文本服务</h2>
+        <p class="lead">本示例演示通过RPC调用远程AI文本服务和本地服务的对比</p>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                AI对话
+            </div>
+            <div class="card-body">
+                <div class="chat-container" id="chatContainer">
+                    <!-- 聊天消息将在这里显示 -->
+                </div>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="userInput" placeholder="输入您的问题...">
+                    <button class="btn btn-primary" type="button" id="sendButton">发送</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info">
+            <strong>提示：</strong> 本示例会同时显示远程服务和本地服务的回复结果，以便对比。
+        </div>
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2023 RPC框架演示
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatContainer = document.getElementById('chatContainer');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+
+            // 发送消息
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message) {
+                    // 添加用户消息
+                    addMessage(message, 'user');
+                    userInput.value = '';
+                    
+                    // 发送请求到服务器
+                    fetch('/text/ai-reply', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ input: message }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // 添加远程服务回复
+                            addMessage(data['远程回复'], 'remote');
+                            
+                            // 添加本地服务回复
+                            addMessage(data['本地回复'], 'local');
+                        } else {
+                            // 处理错误
+                            addMessage(`错误: ${data.message}`, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        addMessage(`请求错误: ${error}`, 'error');
+                    });
+                }
+            }
+
+            // 添加消息到聊天区域
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                
+                if (type === 'user') {
+                    messageDiv.className += ' user-message';
+                } else if (type === 'remote') {
+                    messageDiv.className += ' remote-message';
+                } else if (type === 'local') {
+                    messageDiv.className += ' local-message';
+                } else {
+                    messageDiv.className += ' error-message';
+                }
+                
+                // 当前时间
+                const now = new Date();
+                const timeString = now.toLocaleTimeString();
+                
+                // 设置消息内容
+                messageDiv.innerHTML = `
+                    <div>${text}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                chatContainer.appendChild(messageDiv);
+                
+                // 滚动到底部
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // 点击发送按钮
+            sendButton.addEventListener('click', sendMessage);
+            
+            // 按回车键发送
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 初始消息
+            addMessage('您好！我是AI助手，请输入您的问题。', 'remote');
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPC框架演示</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .demo-card {
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">RPC框架演示</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/matrix-demo">矩阵运算</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/text-demo">AI文本服务</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">欢迎使用RPC框架演示系统</h1>
+            <p class="lead">这是一个简单的RPC框架演示系统，展示了分布式服务的调用过程。</p>
+            <hr class="my-4">
+            <p>系统包含三个主要组件：注册中心、服务提供者和Web服务消费者（当前应用）。</p>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card demo-card">
+                    <div class="card-body">
+                        <h5 class="card-title">矩阵运算服务</h5>
+                        <p class="card-text">通过RPC调用远程矩阵运算服务，支持矩阵加法、乘法、转置和行列式计算。</p>
+                        <a href="/matrix-demo" class="btn btn-primary">开始使用</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card demo-card">
+                    <div class="card-body">
+                        <h5 class="card-title">AI文本服务</h5>
+                        <p class="card-text">通过RPC调用远程AI文本服务，获取AI生成的回复内容。</p>
+                        <a href="/text-demo" class="btn btn-primary">开始使用</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        系统架构
+                    </div>
+                    <div class="card-body">
+                        <h5>三个核心组件</h5>
+                        <ul>
+                            <li><strong>注册中心</strong>：负责服务注册和发现，默认端口8000</li>
+                            <li><strong>服务提供者</strong>：提供实际的业务服务实现，默认端口9000</li>
+                            <li><strong>Web服务消费者</strong>：当前应用，调用远程服务并展示结果，默认端口8080</li>
+                        </ul>
+                        <h5>调用流程</h5>
+                        <ol>
+                            <li>服务提供者向注册中心注册服务</li>
+                            <li>服务消费者从注册中心获取服务地址</li>
+                            <li>服务消费者通过RPC框架调用远程服务</li>
+                            <li>在服务提供者不可用时自动使用本地服务实现</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2023 RPC框架演示
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
