@@ -20,10 +20,10 @@ import java.util.function.Predicate;
 @Component
 public class RpcServiceReference {
 
-    @RpcReference(version = "1.0.0", enableLocalService = true, condition = "booltrue")
+    @RpcReference(version = "1.0.0", enableLocalService = true, condition = "time0900-1800")
     private MatrixService matrixService;
 
-    @RpcReference(version = "1.0.0", enableLocalService = true, condition = "boolfalse")
+    @RpcReference(version = "1.0.0", enableLocalService = true, condition = "count3")
     private TextService textService;
 
     static {
