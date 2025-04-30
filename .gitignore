@@ -2,3 +2,4 @@
 target
 logs
 rpc.properties
+dependency-reduced-pom.xml
