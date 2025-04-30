@@ -36,10 +36,6 @@ public class TextController {
             String remoteReply = rpcServiceReference.getTextService().aiReply(userInput);
             result.put("远程回复", remoteReply);
             
-            // 使用本地服务
-            String localReply = localTextService.aiReply(userInput);
-            result.put("本地回复", localReply);
-            
             result.put("success", true);
         } catch (Exception e) {
             log.error("AI回复生成错误", e);

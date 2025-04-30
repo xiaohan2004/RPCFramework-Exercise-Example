@@ -39,10 +39,6 @@ public class MatrixController {
             double[][] remoteResult = rpcServiceReference.getMatrixService().add(a, b);
             result.put("远程计算结果", deepToString(remoteResult));
 
-            // 使用本地服务
-            double[][] localResult = localMatrixService.add(a, b);
-            result.put("本地计算结果", deepToString(localResult));
-
             result.put("success", true);
         } catch (Exception e) {
             log.error("矩阵加法计算错误", e);
@@ -67,10 +63,6 @@ public class MatrixController {
             double[][] remoteResult = rpcServiceReference.getMatrixService().multiply(a, b);
             result.put("远程计算结果", deepToString(remoteResult));
 
-            // 使用本地服务
-            double[][] localResult = localMatrixService.multiply(a, b);
-            result.put("本地计算结果", deepToString(localResult));
-
             result.put("success", true);
         } catch (Exception e) {
             log.error("矩阵乘法计算错误", e);
@@ -94,10 +86,6 @@ public class MatrixController {
             double[][] remoteResult = rpcServiceReference.getMatrixService().transpose(matrix);
             result.put("远程计算结果", deepToString(remoteResult));
 
-            // 使用本地服务
-            double[][] localResult = localMatrixService.transpose(matrix);
-            result.put("本地计算结果", deepToString(localResult));
-
             result.put("success", true);
         } catch (Exception e) {
             log.error("矩阵转置计算错误", e);
@@ -120,10 +108,6 @@ public class MatrixController {
             // 使用远程服务
             double remoteResult = rpcServiceReference.getMatrixService().determinant(matrix);
             result.put("远程计算结果", remoteResult);
-
-            // 使用本地服务
-            double localResult = localMatrixService.determinant(matrix);
-            result.put("本地计算结果", localResult);
 
             result.put("success", true);
         } catch (Exception e) {

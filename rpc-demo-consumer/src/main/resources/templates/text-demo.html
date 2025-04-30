@@ -82,10 +82,6 @@
                 </div>
             </div>
         </div>
-        
-        <div class="alert alert-info">
-            <strong>提示：</strong> 本示例会同时显示远程服务和本地服务的回复结果，以便对比。
-        </div>
     </div>
 
     <footer class="bg-light text-center text-lg-start mt-5">
@@ -122,9 +118,6 @@
                         if (data.success) {
                             // 添加远程服务回复
                             addMessage(data['远程回复'], 'remote');
-                            
-                            // 添加本地服务回复
-                            addMessage(data['本地回复'], 'local');
                         } else {
                             // 处理错误
                             addMessage(`错误: ${data.message}`, 'error');
